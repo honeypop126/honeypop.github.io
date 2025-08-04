@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cottagecore Garden</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Crimson+Text:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f8f4f0 0%, #e8f5e8 50%, #f5e8f0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Vine borders */
+        .vine-border {
+            position: fixed;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .vine-top {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80'%3E%3Cpath d='M0,60 Q50,20 100,40 T200,35 T300,45 T400,30' stroke='%23a8d5a8' stroke-width='3' fill='none'/%3E%3Cpath d='M0,70 Q60,30 120,50 T240,45 T360,55 T400,40' stroke='%23b8e6b8' stroke-width='2' fill='none'/%3E%3Ccircle cx='80' cy='35' r='8' fill='%23ffb3d9'/%3E%3Ccircle cx='180' cy='30' r='6' fill='%23ffc6e6'/%3E%3Ccircle cx='280' cy='40' r='7' fill='%23ffb3d9'/%3E%3Ccircle cx='320' cy='50' r='5' fill='%23ffc6e6'/%3E%3C/svg%3E") repeat-x;
+        }
+        
+        .vine-bottom {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80'%3E%3Cpath d='M0,20 Q50,60 100,40 T200,45 T300,35 T400,50' stroke='%23a8d5a8' stroke-width='3' fill='none'/%3E%3Cpath d='M0,10 Q60,50 120,30 T240,35 T360,25 T400,40' stroke='%23b8e6b8' stroke-width='2' fill='none'/%3E%3Ccircle cx='60' cy='45' r='8' fill='%23ffb3d9'/%3E%3Ccircle cx='160' cy='50' r='6' fill='%23ffc6e6'/%3E%3Ccircle cx='260' cy='40' r='7' fill='%23ffb3d9'/%3E%3Ccircle cx='340' cy='30' r='5' fill='%23ffc6e6'/%3E%3C/svg%3E") repeat-x;
+        }
+        
+        .vine-left {
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 400'%3E%3Cpath d='M60,0 Q20,50 40,100 T35,200 T45,300 T30,400' stroke='%23a8d5a8' stroke-width='3' fill='none'/%3E%3Cpath d='M70,0 Q30,60 50,120 T45,240 T55,360 T40,400' stroke='%23b8e6b8' stroke-width='2' fill='none'/%3E%3Ccircle cx='35' cy='80' r='8' fill='%23ffb3d9'/%3E%3Ccircle cx='30' cy='180' r='6' fill='%23ffc6e6'/%3E%3Ccircle cx='40' cy='280' r='7' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='320' r='5' fill='%23ffc6e6'/%3E%3C/svg%3E") repeat-y;
+        }
+        
+        .vine-right {
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 400'%3E%3Cpath d='M20,0 Q60,50 40,100 T45,200 T35,300 T50,400' stroke='%23a8d5a8' stroke-width='3' fill='none'/%3E%3Cpath d='M10,0 Q50,60 30,120 T35,240 T25,360 T40,400' stroke='%23b8e6b8' stroke-width='2' fill='none'/%3E%3Ccircle cx='45' cy='60' r='8' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='160' r='6' fill='%23ffc6e6'/%3E%3Ccircle cx='40' cy='260' r='7' fill='%23ffb3d9'/%3E%3Ccircle cx='30' cy='340' r='5' fill='%23ffc6e6'/%3E%3C/svg%3E") repeat-y;
+        }
+        
+        /* Flying creatures */
+        .butterfly, .bee {
+            position: fixed;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .butterfly {
+            width: 40px;
+            height: 30px;
+            animation: fly 15s infinite linear;
+        }
+        
+        .bee {
+            width: 35px;
+            height: 25px;
+            animation: buzz 12s infinite linear;
+        }
+        
+        @keyframes fly {
+            0% { transform: translate(-50px, 20vh) rotate(0deg); }
+            25% { transform: translate(30vw, 10vh) rotate(15deg); }
+            50% { transform: translate(70vw, 30vh) rotate(-10deg); }
+            75% { transform: translate(40vw, 60vh) rotate(20deg); }
+            100% { transform: translate(100vw, 25vh) rotate(0deg); }
+        }
+        
+        @keyframes buzz {
+            0% { transform: translate(100vw, 40vh) rotate(0deg); }
+            25% { transform: translate(70vw, 20vh) rotate(-15deg); }
+            50% { transform: translate(30vw, 50vh) rotate(10deg); }
+            75% { transform: translate(60vw, 70vh) rotate(-20deg); }
+            100% { transform: translate(-50px, 35vh) rotate(0deg); }
+        }
+        
+        /* Main content */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 100px 20px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #6b8e6b;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #8b6b8b;
+            text-align: center;
+            margin-bottom: 4rem;
+            font-style: italic;
+        }
+        
+        /* Envelope */
+        .envelope-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .envelope {
+            width: 200px;
+            height: 140px;
+            background: #f5e8d3;
+            border: 3px solid #d4b896;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .envelope-flap {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            height: 80px;
+            background: #f0d9b8;
+            border: 3px solid #d4b896;
+            border-radius: 10px 10px 0 0;
+            transform-origin: bottom center;
+            transition: transform 0.8s ease;
+            z-index: 2;
+        }
+        
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 20px solid #f0d9b8;
+        }
+        
+        .envelope.opened .envelope-flap {
+            transform: rotateX(180deg);
+        }
+        
+        .card {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: #fff8f0;
+            border: 2px solid #e6d7c3;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.8s ease 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+        
+        .envelope.opened .card {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .card-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #8b6b8b;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-yes {
+            background: linear-gradient(135deg, #a8d5a8, #90c690);
+            color: white;
+        }
+        
+        .btn-yes:hover {
+            background: linear-gradient(135deg, #90c690, #7bb87b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-no {
+            background: linear-gradient(135deg, #ffb3d9, #ff99cc);
+            color: white;
+        }
+        
+        .btn-no:hover {
+            background: linear-gradient(135deg, #ff99cc, #ff80bf);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: #fff8f0;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px solid #d4b896;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            margin: 20px;
+        }
+        
+        .modal-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #8b6b8b;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-close {
+            background: linear-gradient(135deg, #ffb3d9, #ff99cc);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: linear-gradient(135deg, #ff99cc, #ff80bf);
+            transform: translateY(-2px);
+        }
+        
+        /* Date picker page */
+        .date-page {
+            display: none;
+            text-align: center;
+        }
+        
+        .date-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #6b8e6b;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .date-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .date-option {
+            background: rgba(255,255,255,0.8);
+            border: 3px solid #d4b896;
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .date-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .date-option h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #8b6b8b;
+            margin-bottom: 1rem;
+        }
+        
+        .date-option p {
+            color: #6b8e6b;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .envelope {
+                width: 160px;
+                height: 112px;
+            }
+            
+            .card-text {
+                font-size: 1.4rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .vine-left, .vine-right {
+                width: 40px;
+            }
+            
+            .vine-top, .vine-bottom {
+                height: 40px;
+            }
+            
+            .container {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Vine borders -->
+    <div class="vine-border vine-top"></div>
+    <div class="vine-border vine-bottom"></div>
+    <div class="vine-border vine-left"></div>
+    <div class="vine-border vine-right"></div>
+    
+    <!-- Flying creatures -->
+    <div class="butterfly">
+        <svg viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="12" cy="10" rx="8" ry="6" fill="#ffb3d9" opacity="0.8"/>
+            <ellipse cx="28" cy="10" rx="8" ry="6" fill="#ffc6e6" opacity="0.8"/>
+            <ellipse cx="12" cy="20" rx="6" ry="4" fill="#ff99cc" opacity="0.8"/>
+            <ellipse cx="28" cy="20" rx="6" ry="4" fill="#ffb3d9" opacity="0.8"/>
+            <line x1="20" y1="5" x2="20" y2="25" stroke="#8b6b8b" stroke-width="2"/>
+            <circle cx="20" cy="8" r="2" fill="#6b8e6b"/>
+        </svg>
+    </div>
+    
+    <div class="butterfly" style="animation-delay: -5s;">
+        <svg viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="12" cy="10" rx="8" ry="6" fill="#b3d9ff" opacity="0.8"/>
+            <ellipse cx="28" cy="10" rx="8" ry="6" fill="#c6e6ff" opacity="0.8"/>
+            <ellipse cx="12" cy="20" rx="6" ry="4" fill="#99ccff" opacity="0.8"/>
+            <ellipse cx="28" cy="20" rx="6" ry="4" fill="#b3d9ff" opacity="0.8"/>
+            <line x1="20" y1="5" x2="20" y2="25" stroke="#8b6b8b" stroke-width="2"/>
+            <circle cx="20" cy="8" r="2" fill="#6b8e6b"/>
+        </svg>
+    </div>
+    
+    <div class="bee" style="animation-delay: -3s;">
+        <svg viewBox="0 0 35 25" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="17.5" cy="12.5" rx="12" ry="8" fill="#ffd700"/>
+            <rect x="10" y="8" width="2" height="9" fill="#333"/>
+            <rect x="15" y="8" width="2" height="9" fill="#333"/>
+            <rect x="20" y="8" width="2" height="9" fill="#333"/>
+            <ellipse cx="8" cy="8" rx="6" ry="3" fill="#fff" opacity="0.7"/>
+            <ellipse cx="27" cy="8" rx="6" ry="3" fill="#fff" opacity="0.7"/>
+            <circle cx="17.5" cy="10" r="2" fill="#333"/>
+        </svg>
+    </div>
+    
+    <div class="bee" style="animation-delay: -8s;">
+        <svg viewBox="0 0 35 25" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="17.5" cy="12.5" rx="12" ry="8" fill="#ffd700"/>
+            <rect x="10" y="8" width="2" height="9" fill="#333"/>
+            <rect x="15" y="8" width="2" height="9" fill="#333"/>
+            <rect x="20" y="8" width="2" height="9" fill="#333"/>
+            <ellipse cx="8" cy="8" rx="6" ry="3" fill="#fff" opacity="0.7"/>
+            <ellipse cx="27" cy="8" rx="6" ry="3" fill="#fff" opacity="0.7"/>
+            <circle cx="17.5" cy="10" r="2" fill="#333"/>
+        </svg>
+    </div>
+    
+    <!-- Main content -->
+    <div class="container">
+        <div id="homepage">
+            <h1 class="title">Welcome to My Garden</h1>
+            <p class="subtitle">A little cottage in the digital meadow</p>
+            
+            <div class="envelope-container" onclick="openEnvelope()">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="card">
+                        <div class="card-text">Will you go on a date with me?</div>
+                        <div class="button-container">
+                            <button class="btn btn-yes" onclick="handleYes(event)">Yes</button>
+                            <button class="btn btn-no" onclick="handleNo(event)">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="datePage" class="date-page">
+            <h1 class="date-title">Pick a Date</h1>
+            <div class="date-options">
+                <div class="date-option" onclick="selectDate('picnic')">
+                    <h3>🌸 Garden Picnic</h3>
+                    <p>We'll spread a blanket among the wildflowers and share homemade treats while butterflies dance around us.</p>
+                </div>
+                <div class="date-option" onclick="selectDate('cottage')">
+                    <h3>🏡 Cozy Cottage Evening</h3>
+                    <p>Candlelit dinner by the fireplace with fresh herbs from the garden and stories that last until dawn.</p>
+                </div>
+                <div class="date-option" onclick="selectDate('market')">
+                    <h3>🌻 Farmers Market</h3>
+                    <p>Morning stroll through the local market, picking fresh flowers and ingredients for a meal we'll cook together.</p>
+                </div>
+                <div class="date-option" onclick="selectDate('stargazing')">
+                    <h3>⭐ Stargazing</h3>
+                    <p>Under the open sky with warm blankets, hot cocoa, and whispered dreams as we watch the stars twinkle above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-text">You are blocked! 💔</div>
+            <button class="modal-close" onclick="closeModal()">Okay</button>
+        </div>
+    </div>
+    
+    <script>
+        let envelopeOpened = false;
+        
+        function openEnvelope() {
+            if (!envelopeOpened) {
+                document.getElementById('envelope').classList.add('opened');
+                envelopeOpened = true;
+            }
+        }
+        
+        function handleYes(event) {
+            event.stopPropagation();
+            document.getElementById('homepage').style.display = 'none';
+            document.getElementById('datePage').style.display = 'block';
+        }
+        
+        function handleNo(event) {
+            event.stopPropagation();
+            document.getElementById('modal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function selectDate(dateType) {
+            const messages = {
+                picnic: "Perfect! I'll pack the strawberries and lemonade! 🍓",
+                cottage: "Wonderful! I'll light the candles and pick fresh rosemary! 🕯️",
+                market: "Amazing! I know the best flower stall! 🌻",
+                stargazing: "Magical choice! I'll bring the softest blankets! ⭐"
+            };
+            
+            // Create a custom modal for the date selection
+            const modal = document.getElementById('modal');
+            const modalText = modal.querySelector('.modal-text');
+            modalText.textContent = messages[dateType];
+            modal.style.display = 'flex';
+        }
+        
+        // Add some sparkle effects when hovering over date options
+        document.querySelectorAll('.date-option').forEach(option => {
+            option.addEventListener('mouseenter', function() {
+                this.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,244,240,0.95))';
+            });
+            
+            option.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(255,255,255,0.8)';
+            });
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'969d834613279cab',t:'MTc1NDMwNDgyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
